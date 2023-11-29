@@ -2,7 +2,8 @@ import cv2
 import numpy as np
 import HandTrackingModule as htm
 import time
-import autopy
+import pyautogui
+
 
 wCam, hCam = 640, 480
 frameR = 100
@@ -11,7 +12,7 @@ cap.set(3, wCam)
 cap.set(4, hCam)
 pTime = 0
 detector = htm.handDetector(maxHands=1)
-wScr, hScr = autopy.screen.size()
+wScr, hScr = pyautogui.size()
 print(wScr, hScr)
 smooth = 7
 plocX, plocY = 0, 0
@@ -38,7 +39,7 @@ while True:
             y3 = np.interp(y1, (frameR, hCam-frameR), (0, hScr))
             clocX = plocX + (x3 - plocX) / smooth
             clocY = plocY + (y3 - plocY) / smooth
-            autopy.mouse.move(wScr-x3, y3)
+            pyautogui.moveTo(wScr - x3, y3)
             cv2.circle(img, (x1, y1), 15, (255, 0, 155),
                        cv2.FILLED)
             plocX, plocY = clocX, clocY
@@ -49,7 +50,7 @@ while True:
             if length < 40 :
                 cv2.circle(img, (lineInfo[4], lineInfo[5]),
                            15, (0, 255, 0), cv2.FILLED)
-                autopy.mouse.click()
+                pyautogui.click()
 
 
     cTime = time.time()
